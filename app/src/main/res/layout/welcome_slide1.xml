@@ -20,6 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textAlignment="center"
             android:text="@string/slide_1_title"
             android:textColor="@android:color/white"

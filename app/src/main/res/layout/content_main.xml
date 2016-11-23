@@ -11,16 +11,17 @@
     tools:context="com.project.markpollution.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <Spinner
-        android:id="@+id/spnCateMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dialog" />
-
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/spnCateMap">
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/spnCateMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:visibility="invisible"
+            android:background="@android:color/transparent"/>
 
         <fragment
             android:id="@+id/map"
@@ -149,7 +150,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/texview_design"
+                android:layout_marginStart="@dimen/dots_height"
+                android:layout_marginLeft="@dimen/dots_height"
+                android:layout_marginEnd="@dimen/dots_height"
+                android:gravity="center_vertical"
+                android:layout_marginRight="@dimen/dots_height"
+                android:background="@drawable/text_refresh"
                 android:paddingEnd="5sp"
                 android:paddingStart="5sp"
                 android:text="@string/tvRefresh"

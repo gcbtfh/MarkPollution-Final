@@ -297,7 +297,7 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     StringRequest stringReq = new StringRequest(Request.Method.POST, url_InsertComment, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
                             etComment.setText(null);
                             retrieveComments();
                         }
@@ -400,7 +400,12 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url_InsertRate, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+                if(response.equals("rating failed")){
+                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_failed), Toast.LENGTH_SHORT).show();
+                }
+                if(response.equals("rating success")){
+                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_success), Toast.LENGTH_SHORT).show();
+                }
                 sumRate();
             }
         }, new Response.ErrorListener() {
@@ -428,8 +433,12 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url_UpdateRate, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
-                sumRate();
+                if(response.equals("The rate was updated")){
+                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_was_update), Toast.LENGTH_SHORT).show();
+                }
+                if(response.equals("The rate wasn't updated")){
+                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_wasnot_update), Toast.LENGTH_SHORT).show();
+                }                sumRate();
             }
         }, new Response.ErrorListener() {
             @Override

@@ -10,8 +10,8 @@
     <string name="hint_Description">Nhập vào mô tả</string>
     <string name="hint_Title">Nhập vào tiêu đề</string>
     <string name="introtitle">MarkPollution</string>
-    <string name="menu_adminnistrative">Adminnistrative Portal</string>
-    <string name="menu_nearby">Ô nhiễm gần đây</string>
+    <string name="menu_adminnistrative">Quản trị</string>
+    <string name="menu_nearby">Ô nhiễm gần bạn</string>
     <string name="menu_recent">Ô nhiễm mới cập nhật</string>
     <string name="menu_report_manager">Quản lý tin đăng</string>
     <string name="menu_serious">Ô nhiễm nghiêm trọng</string>
@@ -28,10 +28,10 @@
     <string name="slide_3_desc">Một người không thể tự cứu đa dạng sinh học của hành tinh, nhưng nỗ lực của mỗi cá nhân để khuyến khích sự giàu có của thiên nhiên không được đánh giá thấp.!</string>
     <string name="start">BẮT ĐẦU</string>
     <string name="tvEnglish">Tiếng Anh</string>
-    <string name="tvNewreport">Chọn địa điểm ô nhiểm và nhấn OK</string>
-    <string name="tvRefresh">Một địa điểm vừa mới cập nhật, nhấn để cập nhật dữ liệu...</string>
+    <string name="tvNewreport">Chọn địa điểm ô nhiểm và nhấn</string>
+    <string name="tvRefresh">Một địa điểm ô nhiểm vừa mới xuất hiện! Nhấn để cập nhật dữ liệu...</string>
     <string name="tvVietNam">Tiếng Việt</string>
-    <string name="conection_error">Rất tiếc! Không kết nối với internet</string>
+    <string name="conection_error">Lỗi ! Không thể kết nối với internet</string>
     <string name="conection_good">Tốt, Đã kết nối với internet</string>
     <string name="register_success">Đăng ký thành công</string>
     <string name="loadingdata" >Đang tải dữ liệu...</string>
@@ -46,7 +46,7 @@
     <string name="title_inforwindow">Đây là địa điểm ô nhiễm</string>
     <string name="insert_report_success">Đăng bài thành công</string>
     <string name="select_category">Chọn loại ô nhiễm</string>
-    <string name="menu_heatMaps">Hiển thị bản đồ nhiệt</string>
+    <string name="menu_heatMaps">Hiển thị bản đồ nóng</string>
     <string name="tvByMarkPo">Bới MarkPollution</string>
     <string name="action_close">Đóng</string>
     <string name="title_activity_setting">Cài đặt</string>
@@ -77,4 +77,11 @@
     <string name="currentver">Phiên bản hiện tại :</string>
     <string name="devby">Phát triển bới MarkPollution Team</string>
     <string name="rateus">Bình chọn cho ứng dụng</string>
+    <string name="aboutus_activity">Giới thiệu</string>
+    <string name="admin_activity">Quản trị</string>
+    <string name="sendreport_activity">Gửi báo cáo</string>
+    <string name="rate_failed">Rating thất bại</string>
+    <string name="rate_success">Rating thành công</string>
+    <string name="rate_was_update">Cập nhật rating thành công</string>
+    <string name="rate_wasnot_update">Cập nhật rating thất bại</string>
 </resources>

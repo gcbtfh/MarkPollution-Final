@@ -38,6 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SendReportActivity"
+            android:label="@string/sendreport_activity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DetailReportActivity" />
         <activity android:name=".ReportManagementActivity" />
@@ -50,7 +51,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminActivity" />
+        <activity android:name=".AdminActivity"
+            android:label="@string/admin_activity"/>
         <activity
             android:name=".Fullscreenimage"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
@@ -66,7 +68,8 @@
         <activity
             android:name=".SetupsActivity"
             android:label="@string/title_activity_setups" />
-        <activity android:name=".AboutUsActivity"></activity>
+        <activity android:name=".AboutUsActivity"
+            android:label="@string/aboutus_activity"></activity>
     </application>
 
 </manifest>

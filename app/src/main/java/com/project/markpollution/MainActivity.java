@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -141,9 +140,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private HeatmapTileProvider mProvider;
     private TileOverlay mOverlay;
     FloatingActionMenu fab_Category;
-    com.github.clans.fab.FloatingActionButton fab_land, fab_water, fab_thermal,fab_noise,fab_light,fab_air;
+    com.github.clans.fab.FloatingActionButton fab_land, fab_water, fab_thermal, fab_noise, fab_light,
+            fab_air, fab_all;
     private Animation animTextview;
-    MediaPlayer mediaPlayer = null;
+//    MediaPlayer mediaPlayer = null;
     private String emails,names;
     DrawerLayout drawerLayout;
     @Override
@@ -165,22 +165,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initView() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.newreport);
-        mediaPlayer.start();
+//        mediaPlayer = MediaPlayer.create(this, R.raw.newreport);
         animTextview = AnimationUtils.loadAnimation(this, R.anim.scale);
         animTextview.reset();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        toolbar.setTitle(getResources().getString(R.string.hello)+", "+names);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
-        fab_Category  = (FloatingActionMenu) findViewById(R.id.fab_category);
-        fab_air = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_airPO);
-        fab_noise = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_noisePO);
-        fab_thermal = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_thermalPO);
-        fab_water = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_waterPO);
-        fab_land = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_landPO);
-        fab_light = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_lightPO);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -214,7 +205,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
-        mapFragment.getMapAsync(this);
+        // initialize fabMenu
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        fab_Category  = (FloatingActionMenu) findViewById(R.id.fab_category);
+        fab_air = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_airPO);
+        fab_noise = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_noisePO);
+        fab_thermal = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_thermalPO);
+        fab_water = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_waterPO);
+        fab_land = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_landPO);
+        fab_light = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_lightPO);
+        fab_all = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_allPO);
         fab.setOnClickListener(this);
         fab_light.setOnClickListener(this);
         fab_land.setOnClickListener(this);
@@ -222,7 +222,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab_thermal.setOnClickListener(this);
         fab_air.setOnClickListener(this);
         fab_noise.setOnClickListener(this);
+        fab_all.setOnClickListener(this);
+
         imgGetLocation.setOnClickListener(this);
+        mapFragment.getMapAsync(this);
     }
 
     // Fetch data from SigninActivity sent
@@ -528,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Draw circle around my location
         mMap.addCircle(new CircleOptions()
                 .center(new LatLng(curLocation.getLatitude(), curLocation.getLongitude()))
-                .radius(5000)
+                .radius(Double.parseDouble(radius))
                 .strokeWidth(2)
                 .strokeColor(Color.RED)
                 .fillColor(R.color.fill_circle));
@@ -580,12 +583,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Report report = dataSnapshot.getValue(Report.class);
                 if (!report.getId_user().equals(getUserID())) {
                     if (!isFirstTimeLaunch) {
-                        if (mediaPlayer != null) {
-                            mediaPlayer.reset();
-                            mediaPlayer.release();
-                        }else {
-                            mediaPlayer.start();
-                        }
+//                        if (mediaPlayer != null) {
+//                            mediaPlayer.reset();
+//                            mediaPlayer.release();
+//                        }else {
+//                            mediaPlayer.start();
+//                        }
                         tvRefresh.setVisibility(View.VISIBLE);
                         tvRefresh.startAnimation(animTextview);
                         refreshData();
@@ -873,29 +876,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    private void showAllPo(){
+        mMap.clear();
+        listMarkers = new ArrayList<>();    // each time filter category reinitialize List markers
+        for (PollutionPoint po : listPo) {
+            addMarker(mMap, po);
+        }
+        // update camera
+        cameraViewAllMarkers(listMarkers);
 
+        // load slidingDrawer
+        loadSlidingDrawerFeed(listPo);
+    }
     @Override
     public void onClick(View view) {
+        String CateID = null;
         switch (view.getId()){
             case R.id.fab :
                handlerFabbutton(view);
                 break;
             case R.id.fab_landPO:
+                CateID = "1";
+                getPollutionByCateID(CateID);
                 fab_Category.close(true);
                 break;
             case R.id.fab_waterPO:
+                CateID = "2";
+                getPollutionByCateID(CateID);
                 fab_Category.close(true);
                 break;
             case R.id.fab_airPO:
+                CateID = "3";
+                getPollutionByCateID(CateID);
                 fab_Category.close(true);
                 break;
             case R.id.fab_thermalPO:
+                CateID = "4";
+                getPollutionByCateID(CateID);
                 fab_Category.close(true);
                 break;
             case R.id.fab_lightPO:
+                CateID = "5";
+                getPollutionByCateID(CateID);
                 fab_Category.close(true);
                 break;
             case R.id.fab_noisePO:
+                CateID = "6";
+                getPollutionByCateID(CateID);
+                fab_Category.close(true);
+                break;
+            case R.id.fab_allPO:
+                showAllPo();
                 fab_Category.close(true);
                 break;
             case R.id.imgGetLocation :

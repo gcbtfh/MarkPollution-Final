@@ -23,7 +23,7 @@
     <string name="button_choosefromgallery">Choose from Gallery</string>
     <string name="button_capture">Take a Photo</string>
     <string name="action_settings">Settings</string>
-    <string name="action_submit">Submit</string>
+    <string name="action_submit">Send</string>
     <string name="action_logout">Logout</string>
     <string name="action_cancel">Cancel</string>
     <string name="hint_Title">Input title here</string>
@@ -34,10 +34,10 @@
     <string name="menu_report_manager">Report Management</string>
     <string name="menu_system">System</string>
     <string name="menu_adminnistrative">Adminnistrative Portal</string>
-    <string name="tvRefresh">New pollution point(s) have reported! \nClick here to reload...</string>
+    <string name="tvRefresh">New pollution point(s) have reported! &#8230;Click here to reload...</string>
     <string name="tvNewreport">Choose pollution point then click </string>
     <string name="conection_good">Good! Connected to Internet</string>
-    <string name="conection_error">Good! Connected to Internet</string>
+    <string name="conection_error">Error ! Check the Internet Connection</string>
     <string name="register_success">Account has registered successful</string>
     <string name="loadingdata">Loading data...</string>
     <string name="tvEnglish">English</string>
@@ -66,7 +66,7 @@
     <string name="pref_title_language">Language</string>
     <string name="warning">Warning</string>
     <string name="title_ask_setting">Apply setting ?</string>
-    <string name="desc_ask_setting">Restart apps to change language.</string>
+    <string name="desc_ask_setting">Restart app to change language.</string>
     <string name="land_pollution">Land pollution</string>
     <string name="water_pollution">Water pollution</string>
     <string name="air_pollution">Air pollution</string>
@@ -84,9 +84,16 @@
     <string name="signin_as">Signed in as</string>
     <string name="currentver">Current version :</string>
     <string name="devby">Developer by MarkPollution Team</string>
-    <string name="addline1">137 Nguyen Thi Thap Street, District Lien Chieu,</string>
+    <string name="addline1">137 Nguyen Thi Thap Street, Lien Chieu District,</string>
     <string name="addline2">Da Nang City, Viet Nam</string>
     <string name="rateus">Rate this App</string>
+    <string name="sendreport_activity">Send report</string>
+    <string name="admin_activity">Admin Portal</string>
+    <string name="aboutus_activity">About us</string>
+    <string name="rate_failed">Rating failed</string>
+    <string name="rate_success">Rating success</string>
+    <string name="rate_was_update">The rate was updated</string>
+    <string name="rate_wasnot_update">The rate was not updated</string>
     <string-array name="pref_example_list_titles">
         <item>English</item>
         <item>Vietnamese</item>
