@@ -837,7 +837,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, "Good app : URL app");
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.project.markpollution");
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
             return true;
         }

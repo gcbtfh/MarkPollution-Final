@@ -84,4 +84,15 @@
     <string name="rate_success">Rating thành công</string>
     <string name="rate_was_update">Cập nhật rating thành công</string>
     <string name="rate_wasnot_update">Cập nhật rating thất bại</string>
+    <string name="detail_activity">Chi tiết báo cáo</string>
+    <string name="required_desc">Bạn phải nhập mô tả</string>
+    <string name="required_title">Bạn phải nhập tiêu đề</string>
+    <string-array name="pref_example_list_titles">
+        <item>Tiếng Anh</item>
+        <item>Tiếng Việt</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>en</item>
+        <item>vi</item>
+    </string-array>
 </resources>

@@ -17,6 +17,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_gravity="center_vertical"
+        android:text="Text Here"
+        android:visibility="gone">
+    </TextView>
+    <TextView
+        android:id="@+id/tvSpinners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
         android:text="Text Here" >
     </TextView>
 

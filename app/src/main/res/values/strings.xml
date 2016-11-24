@@ -94,6 +94,9 @@
     <string name="rate_success">Rating success</string>
     <string name="rate_was_update">The rate was updated</string>
     <string name="rate_wasnot_update">The rate was not updated</string>
+    <string name="detail_activity">Detail report</string>
+    <string name="required_title">You must input title</string>
+    <string name="required_desc">You must input description</string>
     <string-array name="pref_example_list_titles">
         <item>English</item>
         <item>Vietnamese</item>

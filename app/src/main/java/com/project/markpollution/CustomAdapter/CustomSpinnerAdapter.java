@@ -57,8 +57,10 @@ public class CustomSpinnerAdapter extends ArrayAdapter<Category> {
         tempValues = (Category) data.get(position);
 
         TextView label = (TextView) row.findViewById(R.id.tvSpinner);
+        TextView labels = (TextView) row.findViewById(R.id.tvSpinners);
         ImageView icon = (ImageView) row.findViewById(R.id.imvSpinner);
         label.setText(tempValues.getName());
+        labels.setText(getContext().getResources().getString(setLable(tempValues.getId())));
         label.setTextColor(getContext().getResources().getColor(R.color.colorPrimary));
         icon.setImageResource(setIconCategory(tempValues.getId()));
         return row;
@@ -83,6 +85,34 @@ public class CustomSpinnerAdapter extends ArrayAdapter<Category> {
                 break;
             case "6" :
                 idIcon = R.drawable.noise_icon;
+                break;
+            default:
+                idIcon = 1;
+                break;
+
+        }
+        return idIcon;
+    }
+    private int setLable(String id){
+        int idIcon =1;
+        switch (id){
+            case "1":
+                idIcon = R.string.land_pollution;
+                break;
+            case "2" :
+                idIcon = R.string.water_pollution;
+                break;
+            case "3":
+                idIcon = R.string.air_pollution;
+                break;
+            case "4" :
+                idIcon = R.string.thermal_pollution;
+                break;
+            case "5":
+                idIcon = R.string.light_pollution;
+                break;
+            case "6" :
+                idIcon = R.string.noise_pollution;
                 break;
             default:
                 idIcon = 1;

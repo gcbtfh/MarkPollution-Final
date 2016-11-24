@@ -1,5 +1,6 @@
 package com.project.markpollution;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,9 +16,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,7 +92,7 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private boolean isFirstTimeRun = true;
-
+    private RelativeLayout relativeLayoutDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +147,7 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void initView() {
+        relativeLayoutDetail = (RelativeLayout) findViewById(R.id.relative_detail);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapDetail);
         ivPicture = (ImageView) findViewById(R.id.imageViewDetail);
         ivAvatar = (ImageView) findViewById(R.id.imageViewAvatarDetail);
@@ -304,7 +308,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
+//                            Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.e("Volley", error.getMessage());
                             etComment.setText(null);
                         }
@@ -320,11 +325,15 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     };
 
                     Volley.newRequestQueue(DetailReportActivity.this).add(stringReq);
+                    hideKeyboard(v);
                 }
             }
         });
     }
-
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     private String getUserID(){
         SharedPreferences sharedPreferences = getSharedPreferences("sharedpref_id_user",MODE_PRIVATE);
         return sharedPreferences.getString("sharedpref_id_user","");
@@ -351,7 +360,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -384,7 +394,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                             Log.e("Volley", error.getMessage());
                         }
                     });
@@ -401,17 +412,20 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onResponse(String response) {
                 if(response.equals("rating failed")){
-                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_failed), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_failed), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayoutDetail,  getResources().getString(R.string.rate_failed), Snackbar.LENGTH_LONG).show();
                 }
                 if(response.equals("rating success")){
-                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_success), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_success), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayoutDetail,  getResources().getString(R.string.rate_success), Snackbar.LENGTH_LONG).show();
                 }
                 sumRate();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.e("Volley", error.getMessage());
             }
         }){
@@ -434,16 +448,19 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onResponse(String response) {
                 if(response.equals("The rate was updated")){
-                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_was_update), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_was_update), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayoutDetail,  getResources().getString(R.string.rate_was_update), Snackbar.LENGTH_LONG).show();
                 }
                 if(response.equals("The rate wasn't updated")){
-                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_wasnot_update), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayoutDetail,  getResources().getString(R.string.rate_wasnot_update), Snackbar.LENGTH_LONG).show();
+//                    Toast.makeText(DetailReportActivity.this, getResources().getString(R.string.rate_wasnot_update), Toast.LENGTH_SHORT).show();
                 }                sumRate();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.e("Volley", error.getMessage());
             }
         }){
@@ -474,7 +491,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.e("Volley", error.getMessage());
             }
         });
@@ -491,7 +509,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.e("Volley_SumRate", error.getMessage());
             }
         });
@@ -508,16 +527,20 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     public void onResponse(String response) {
                         if(response.equals("You have unchecked spam")){
                             setIconSpam(false);
-                            Toast.makeText(DetailReportActivity.this, R.string.uncheck_spam, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, R.string.uncheck_spam, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail,  R.string.uncheck_spam, Snackbar.LENGTH_LONG).show();
                         }else if(response.equals("Spam successful")){
                             setIconSpam(true);
-                            Toast.makeText(DetailReportActivity.this, R.string.check_spam, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, R.string.check_spam, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail,  R.string.uncheck_spam, Snackbar.LENGTH_LONG).show();
+
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(relativeLayoutDetail,  error.getMessage(), Snackbar.LENGTH_LONG).show();
                         Log.e("Volley_insertSpam", error.getMessage());
                     }
                 }){
@@ -580,17 +603,20 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("You have unchecked resolve")){
-                            Toast.makeText(DetailReportActivity.this, R.string.uncheck_resolve, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, R.string.uncheck_resolve, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail, R.string.uncheck_resolve, Snackbar.LENGTH_LONG).show();
                             setIconResolve(false);
                         }else if(response.equals("Check resolved successful")){
-                            Toast.makeText(DetailReportActivity.this, R.string.check_resolve, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailReportActivity.this, R.string.check_resolve, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(relativeLayoutDetail, R.string.check_resolve, Snackbar.LENGTH_LONG).show();
                             setIconResolve(true);
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(relativeLayoutDetail, error.getMessage(), Snackbar.LENGTH_LONG).show();
                         Log.e("Volley_InsertResolve", error.getMessage());
                     }
                 }){
@@ -622,7 +648,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(relativeLayoutDetail, error.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.e("Volley_CheckResolve", error.getMessage());
             }
         });
@@ -655,7 +682,8 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                                     @Override
                                     public void onResponse(String response) {
                                         if(response.equals("Delete pollution successful")){
-                                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+                                            Snackbar.make(relativeLayoutDetail, response, Snackbar.LENGTH_LONG).show();
                                             notifyRefreshData();    // put a trigger on firebase
 
                                             // From twice data changed. Toggle trigger refresh data in MainActivity
@@ -664,13 +692,16 @@ public class DetailReportActivity extends AppCompatActivity implements OnMapRead
                                             // return AdminActivity to reload data
                                             finish();
                                         }else {
-                                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(DetailReportActivity.this, response, Toast.LENGTH_SHORT).show();
+                                            Snackbar.make(relativeLayoutDetail, response, Snackbar.LENGTH_LONG).show();
                                         }
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(DetailReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(relativeLayoutDetail, error.getMessage(), Snackbar.LENGTH_LONG).show();
+
                                     }
                                 });
 

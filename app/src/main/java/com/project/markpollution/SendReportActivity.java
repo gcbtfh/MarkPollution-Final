@@ -1,5 +1,6 @@
 package com.project.markpollution;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,17 +13,20 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -80,8 +84,7 @@ public class SendReportActivity extends AppCompatActivity implements OnMapReadyC
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private ProgressDialog progressDialog;
-
-
+RelativeLayout relativeLayoutSend;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +111,7 @@ public class SendReportActivity extends AppCompatActivity implements OnMapReadyC
         ivCamera = (ImageView) findViewById(R.id.ivCameraSubmit);
         spCate = (Spinner) findViewById(R.id.spinnerCate);
         btnSubmit.setOnClickListener(this);
+        relativeLayoutSend = (RelativeLayout) findViewById(R.id.relative_send);
     }
 
     @Override
@@ -304,78 +308,102 @@ public class SendReportActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onClick(View v) {
         if(v == btnSubmit){
-            showProgressDialog(getResources().getString(R.string.sending));
-
-            StorageReference storeRef = storage.getReferenceFromUrl("gs://markpollution.appspot.com");
-            StorageReference picRef = storeRef.child("images/IMG_" + new SimpleDateFormat("ddMMyyyy_hhmmss").format(new Date())+".jpg");
-
-            // set enable drawing catch & build drawing catch for imageView
-            ivCamera.setDrawingCacheEnabled(true);
-            ivCamera.buildDrawingCache();
-
-            // get drawing catch from imageView and return bitmap
-            Bitmap bitmap = ivCamera.getDrawingCache();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);     // compress bitmap and pass it to baos
-
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = picRef.putBytes(data);      // pass value to node
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    hideProgressDialog();
-                    Toast.makeText(SendReportActivity.this, "Upload image failure", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    final String image = taskSnapshot.getDownloadUrl().toString();  // get image's URL
-                    // Send data into database
-                    StringRequest strReq = new StringRequest(Request.Method.POST, url_insert_pollutionPoint, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Trigger report on Firebase Database;
-                            DatabaseReference refReport = databaseReference.child("NewReports");
-                            if(!response.equals("insert pollution point failure")){
-                                refReport.setValue(new Report(response, getUserID()));
-                                Toast.makeText(SendReportActivity.this, R.string.insert_report_success, Toast
-                                        .LENGTH_SHORT).show();
+            String title = etTitle.getText().toString();
+            String desc = etDesc.getText().toString();
+            if (title.length()==0){
+                Snackbar.make(relativeLayoutSend, R.string.required_title, Snackbar.LENGTH_INDEFINITE).setAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
                             }
-                            // return MainActivity and trigger Refresh data
-                            MainActivity.triggerRefreshData = true;
-                            hideProgressDialog();
-                            finish();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(SendReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e("Volley", error.getMessage());
-                            hideProgressDialog();
-                            finish();
-                        }
-                    }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("id_cate", id_cate);
-                            params.put("id_user", getUserID());
-                            params.put("lat", Double.toString(lat));
-                            params.put("lng", Double.toString(lng));
-                            params.put("title", etTitle.getText().toString());
-                            params.put("desc", etDesc.getText().toString());
-                            params.put("image", image);
-                            return params;
-                        }
-                    };
+                        }).show();
+            }else
+            if(desc.length()==0){
+                Snackbar.make(relativeLayoutSend, R.string.required_desc, Snackbar.LENGTH_INDEFINITE).setAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                            }
+                        }).show();
+            }else {
+                showProgressDialog(getResources().getString(R.string.sending));
 
-                    Volley.newRequestQueue(SendReportActivity.this).add(strReq);
+                StorageReference storeRef = storage.getReferenceFromUrl("gs://markpollution.appspot.com");
+                StorageReference picRef = storeRef.child("images/IMG_" + new SimpleDateFormat("ddMMyyyy_hhmmss").format(new Date())+".jpg");
 
-                }
-            });
+                // set enable drawing catch & build drawing catch for imageView
+                ivCamera.setDrawingCacheEnabled(true);
+                ivCamera.buildDrawingCache();
+
+                // get drawing catch from imageView and return bitmap
+                Bitmap bitmap = ivCamera.getDrawingCache();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);     // compress bitmap and pass it to baos
+
+                byte[] data = baos.toByteArray();
+                UploadTask uploadTask = picRef.putBytes(data);      // pass value to node
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressDialog();
+                        Toast.makeText(SendReportActivity.this, "Upload image failure", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        final String image = taskSnapshot.getDownloadUrl().toString();  // get image's URL
+                        // Send data into database
+                        StringRequest strReq = new StringRequest(Request.Method.POST, url_insert_pollutionPoint, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Trigger report on Firebase Database;
+                                DatabaseReference refReport = databaseReference.child("NewReports");
+                                if(!response.equals("insert pollution point failure")){
+                                    refReport.setValue(new Report(response, getUserID()));
+                                    Toast.makeText(SendReportActivity.this, R.string.insert_report_success, Toast
+                                            .LENGTH_SHORT).show();
+                                }
+                                // return MainActivity and trigger Refresh data
+                                MainActivity.triggerRefreshData = true;
+                                hideProgressDialog();
+                                finish();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(SendReportActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("Volley", error.getMessage());
+                                hideProgressDialog();
+                                finish();
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("id_cate", id_cate);
+                                params.put("id_user", getUserID());
+                                params.put("lat", Double.toString(lat));
+                                params.put("lng", Double.toString(lng));
+                                params.put("title", etTitle.getText().toString());
+                                params.put("desc", etDesc.getText().toString());
+                                params.put("image", image);
+                                return params;
+                            }
+                        };
+
+                        Volley.newRequestQueue(SendReportActivity.this).add(strReq);
+
+                    }
+                });
+            }
+
+            hideKeyboard(v);
         }
     }
-
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     private void showProgressDialog(String msg){
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(msg);

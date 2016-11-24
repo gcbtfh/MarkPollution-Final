@@ -40,7 +40,8 @@
             android:name=".SendReportActivity"
             android:label="@string/sendreport_activity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".DetailReportActivity" />
+        <activity android:name=".DetailReportActivity"
+            android:label="@string/detail_activity"/>
         <activity android:name=".ReportManagementActivity" />
         <activity
             android:name=".WelcomeActivity"
